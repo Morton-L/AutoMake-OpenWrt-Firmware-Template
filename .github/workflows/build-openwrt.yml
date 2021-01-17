@@ -19,38 +19,42 @@ on:
         required: false
         default: 'false'
 
+#环境变量
 env:
-  REPO_URL: https://github.com/coolsnowwolf/lede
-  REPO_BRANCH: master
+  Project_URL: https://github.com/Morton-L/OpenWrt
+  Project_Branch: main
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: .config
-  DIY_P1_SH: diy-part1.sh
-  DIY_P2_SH: diy-part2.sh
+  custom_script_1: add-custom-script-1.sh
+  custom_script_2: add-custom-script-2.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
   UPLOAD_COWTRANSFER: false
   UPLOAD_WETRANSFER: false
   UPLOAD_RELEASE: false
-  TZ: Asia/Shanghai
+  TimeZone: Asia/Shanghai
 
+#工作,多个jobs并行运行
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    #指定服务器系统
+    runs-on: ubuntu-20.04
 
+    #动作
     steps:
-    - name: Checkout
+    #动作名称
+    - name: Checkout code
       uses: actions/checkout@main
 
+    #初始化环境变量
     - name: Initialization environment
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
         sudo -E apt-get -qq update
-        sudo -E apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-1804)
-        sudo -E apt-get -qq autoremove --purge
-        sudo -E apt-get -qq clean
-        sudo timedatectl set-timezone "$TZ"
+        sudo -E apt-get -qq install curl
+        sudo -E apt-get -qq install $(curl -fsSL git.io/OpenWrtPrerequisites-Ubuntu_2004)
+        sudo timedatectl set-timezone "$TimeZone"
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
 
@@ -58,15 +62,15 @@ jobs:
       working-directory: /workdir
       run: |
         df -hT $PWD
-        git clone $REPO_URL -b $REPO_BRANCH openwrt
+        git clone $Project_URL -b $Project_Branch openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
-    - name: Load custom feeds
+    - name: Load custom script
       run: |
         [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
-        chmod +x $DIY_P1_SH
+        chmod +x $custom_script_1
         cd openwrt
-        $GITHUB_WORKSPACE/$DIY_P1_SH
+        $GITHUB_WORKSPACE/$custom_script_1
 
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
@@ -78,9 +82,9 @@ jobs:
       run: |
         [ -e files ] && mv files openwrt/files
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
-        chmod +x $DIY_P2_SH
+        chmod +x $custom_script_2
         cd openwrt
-        $GITHUB_WORKSPACE/$DIY_P2_SH
+        $GITHUB_WORKSPACE/$custom_script_2
 
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
