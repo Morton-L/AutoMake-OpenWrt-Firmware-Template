@@ -4,6 +4,7 @@
 ![GitHub Stars](https://img.shields.io/github/stars/Morton-L/AutoMake-OpenWrt.svg?style=flat-square&label=Stars&logo=github)
 ![GitHub Forks](https://img.shields.io/github/forks/Morton-L/AutoMake-OpenWrt.svg?style=flat-square&label=Forks&logo=github)
 
+Build OpenWrt using GitHub Actions
 使用GitHub Actions编译OpenWrt固件 
 
 [Read the details in my blog (in Chinese) | 中文教程](https://p3terx.com/archives/build-openwrt-with-github-actions.html)
@@ -27,7 +28,6 @@
 - [Microsoft Azure](https://azure.microsoft.com)
 - [GitHub Actions](https://github.com/features/actions)
 - [OpenWrt](https://github.com/openwrt/openwrt)
-- [Lean's OpenWrt](https://github.com/coolsnowwolf/lede)
 - [tmate](https://github.com/tmate-io/tmate)
 - [mxschmitt/action-tmate](https://github.com/mxschmitt/action-tmate)
 - [csexton/debugger-action](https://github.com/csexton/debugger-action)
