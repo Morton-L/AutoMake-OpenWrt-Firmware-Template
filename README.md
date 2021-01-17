@@ -5,6 +5,7 @@
 ![GitHub Forks](https://img.shields.io/github/forks/Morton-L/AutoMake-OpenWrt.svg?style=flat-square&label=Forks&logo=github)
 
 Build OpenWrt using GitHub Actions
+
 使用GitHub Actions编译OpenWrt固件 
 
 [Read the details in my blog (in Chinese) | 中文教程](https://p3terx.com/archives/build-openwrt-with-github-actions.html)
