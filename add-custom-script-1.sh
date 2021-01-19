@@ -1,11 +1,11 @@
 #!/bin/bash
 #
-# Copyright (c) 2019-2020 P3TERX <https://p3terx.com>
+# Copyrights © 2017 - 2021 Topstalk. All Rights Reserved.
 #
 # This is free software, licensed under the MIT License.
 # See /LICENSE for more information.
 #
-# https://github.com/P3TERX/Actions-OpenWrt
+# https://github.com/Morton-L/AutoMake-OpenWrt-Firmware-Template
 # File name: add-custom-script-1.sh
 # Description: Add script in update feeds before
 #
@@ -18,4 +18,3 @@
 
 #加入对指定软件包源码的远程仓库的克隆指令
 #git clone https://github.com/P3TERX/xxx package/xxx
-

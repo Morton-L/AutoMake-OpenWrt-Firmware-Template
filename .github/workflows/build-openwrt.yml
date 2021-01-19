@@ -1,10 +1,11 @@
 #
-# Copyright (c) 2019-2020 P3TERX <https://p3terx.com>
+# Copyrights © 2017 - 2021 Topstalk. All Rights Reserved.
 #
 # This is free software, licensed under the MIT License.
 # See /LICENSE for more information.
 #
-# https://github.com/P3TERX/Actions-OpenWrt
+# https://github.com/Morton-L/AutoMake-OpenWrt-Firmware-Template
+# File: .github/workflows/build-openwrt.yml
 # Description: Build OpenWrt using GitHub Actions
 #
 
