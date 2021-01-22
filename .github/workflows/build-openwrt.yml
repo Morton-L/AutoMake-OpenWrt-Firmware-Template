@@ -63,28 +63,29 @@ jobs:
       working-directory: /workdir
       run: |
         df -hT $PWD
-        git clone $Project_URL -b $Project_Branch openwrt
-        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+        git clone $Project_URL -b $Project_Branch boltwrt
+        chmod -Rf 777 boltwrt
+        ln -sf /workdir/boltwrt $GITHUB_WORKSPACE/boltwrt
 
     - name: Load custom script
       run: |
-        [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
+        [ -e $FEEDS_CONF ] && mv $FEEDS_CONF boltwrt/feeds.conf.default
         chmod +x $custom_script_1
-        cd openwrt
+        cd boltwrt
         $GITHUB_WORKSPACE/$custom_script_1
 
     - name: Update feeds
-      run: cd openwrt && ./scripts/feeds update -a
+      run: cd boltwrt && ./scripts/feeds update -a
 
     - name: Install feeds
-      run: cd openwrt && ./scripts/feeds install -a
+      run: cd boltwrt && ./scripts/feeds install -a
 
     - name: Load custom configuration
       run: |
-        [ -e files ] && mv files openwrt/files
-        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
+        [ -e files ] && mv files boltwrt/files
+        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE boltwrt/.config
         chmod +x $custom_script_2
-        cd openwrt
+        cd boltwrt
         $GITHUB_WORKSPACE/$custom_script_2
 
     - name: SSH connection to Actions
@@ -97,7 +98,7 @@ jobs:
     - name: Download package
       id: package
       run: |
-        cd openwrt
+        cd boltwrt
         make defconfig
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
@@ -106,7 +107,7 @@ jobs:
     - name: Compile the firmware
       id: compile
       run: |
-        cd openwrt
+        cd boltwrt
         echo -e "$(nproc) thread compile"
         make -j$(nproc) || make -j1 || make -j1 V=s || export FORCE_UNSAFE_CONFIGURE=1 && sudo make -j1 V=s
         echo "::set-output name=status::success"
@@ -123,13 +124,13 @@ jobs:
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
       with:
         name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
-        path: openwrt/bin
+        path: boltwrt/bin
 
     - name: Organize files
       id: organize
       if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       run: |
-        cd openwrt/bin/targets/*/*
+        cd boltwrt/bin/targets/*/*
         rm -rf packages
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "::set-output name=status::success"
