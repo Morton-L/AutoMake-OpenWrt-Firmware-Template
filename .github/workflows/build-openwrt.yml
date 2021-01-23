@@ -78,7 +78,7 @@ jobs:
       run: cd boltwrt && ./scripts/feeds update -a
 
     - name: Install feeds
-      run: cd boltwrt && ./scripts/feeds install -a
+      run: cd boltwrt && chmod -Rf 777 feeds && ./scripts/feeds install -a
 
     - name: Load custom configuration
       run: |
