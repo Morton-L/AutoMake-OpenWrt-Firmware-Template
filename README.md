@@ -61,4 +61,4 @@ Build OpenWrt using GitHub Actions
 
 ## License
 
-[MIT](https://github.com/Morton-L/AutoMake-OpenWrt-Firmware-Template/blob/main/LICENSE) © Morton.L
+[MIT](LICENSE) © Morton.L
